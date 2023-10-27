@@ -17,13 +17,13 @@ import React from 'react';
 
 // deletedはbackend側で弾くかも
 export type Role = 'admin' | 'editor' | 'deleted';
-export type SampleUserData = {
+export type SampleUserType = {
   name: string;
   email: string;
   role: Role;
   key: number;
 };
-const sampleUserData: SampleUserData[] = [
+const sampleUserData: SampleUserType[] = [
   {
     name: 'user1',
     email: 'test@gmail.com',
