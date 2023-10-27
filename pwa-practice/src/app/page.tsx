@@ -1,123 +1,90 @@
-import Image from 'next/image'
-import { createClient , User } from "@supabase/supabase-js"
-import type {NextPage} from "next"
-import Head from 'next/head'
-import React, { useState, useEffect } from 'react'
-import OneSignal from 'react-onesignal' 
+'use client';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const oneSignalAppId = process.env.NEXT_PUBLIC_ONE_SIGNAL_APP_ID!
+import type { NextPage } from 'next';
+import ProjectCard from '@/components/project/projectCard';
+import { Text, Box, Button, Flex, Heading, Grid, GridItem } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+type Project = {
+  title: string;
+  description: string;
+  status: string;
+  key: number;
+};
+const sampleProject: Project[] = [
+  {
+    title: 'project1',
+    description: 'project1の説明',
+    status: '実験中',
+    key: 1,
+  },
+  {
+    title: 'project2',
+    description: 'project2の説明',
+    status: '実験完了',
+    key: 2,
+  },
+  {
+    title: 'project3',
+    description: 'project3の説明',
+    status: '公開',
+    key: 3,
+  },
+  {
+    title: 'project4',
+    description: 'project4の説明',
+    status: '実験完了',
+    key: 4,
+  },
+  {
+    title: 'project5',
+    description: 'project5の説明',
+    status: '実験完了',
+    key: 5,
+  },
+  {
+    title: 'project6',
+    description: 'project6の説明',
+    status: '実験完了',
+    key: 6,
+  },
+];
 
+/**
+ * メインページ
+ * TODO: projectのページネーション
+ * TODO: sort / 検索 / フィルター機能
+ * TODO: adminユーザのみ新規プロジェクト作成ボタンを表示
+ * TODO: adminユーザのみユーザ編集画面への遷移ボタンを表示
+ * @returns
+ */
 const Home: NextPage = () => {
-  const [user,setUser] = useState<User | null>(null)
-  const [oneSignalInitialized, setOneSignalInitialized] = useState(false)
-
-  /**
-   * initialize onesignal sdk for a given supabase user id
-   * @param uid supabase user id
-   */
-  const initializeOneSignal = async (uid: string) => {
-    if (oneSignalInitialized){
-      return
-    }
-    setOneSignalInitialized(true)
-    OneSignal.init({
-      appId: oneSignalAppId,
-      allowLocalhostAsSecureOrigin: true,
-      notifyButton: {
-        enable: true,
-      },
-    })
-    // setExternalUserId is a OneSignal method that allows you to set your own user id
-    // now use OneSignal.login ex.) https://documentation.onesignal.com/docs/aliases-external-id
-    // This allows us to later send push notifications to the user using their Supabase user ID from the backend
-    // TODO: logout??
-    await OneSignal.login(uid)
-  }
-
-  const sendMagicLink = async (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const { email } = Object.fromEntries(new FormData(event.currentTarget))
-    if (typeof email !== "string") return 
-
-    const { error } = await supabase.auth.signInWithOtp({ email })
-    if(error){
-      alert(error.message)
-    } else {
-      alert("Check your email!")
-    }
-  }
-
-  const submitOrder = async (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const { price } =  Object.fromEntries(new FormData(event.currentTarget))
-    if (typeof price !== "string") return 
-
-    const { error } = await supabase.from("orders").insert({price: Number(price)})
-    if(error){
-      alert(error.message)
-    } 
-  }
-
-  useEffect(() => {
-    const initialize = async() => {
-      const initialUser = (await supabase.auth.getUser())?.data.user
-      setUser(initialUser ?? null)
-      if(initialUser){
-        await initializeOneSignal(initialUser.id)
-      }
-    }
-
-    //これなんだっけ
-    initialize()
-
-    const authListener = supabase.auth.onAuthStateChange((event, session) => {
-      const user = session?.user ?? null
-      setUser(user)
-      if(user){
-        initializeOneSignal(user.id)
-      }
-    })
-
-    return () => {
-      authListener.data.subscription.unsubscribe()
-    }
-  },[])
-
+  const router = useRouter();
+  const handleCreateProject = () => {
+    router.push('/createProject');
+  };
   return (
-    <main className="flex items-center justify-center min-h-screen bg-black">
-        {user ? (
-          <form className="flex flex-col space-y-2" onSubmit={submitOrder}>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block p-2"
-              name="price"
-            >
-              <option value="100">$100</option>
-              <option value="200">$200</option>
-              <option value="300">$300</option>
-            </select>
-            <button type="submit" className="py-1 px-4 text-lg bg-green-400 rounded">
-              Place an Order
-            </button>
-          </form>
-        ) : (
-          <form className="flex flex-col space-y-2" onSubmit={sendMagicLink}>
-            <input
-              className="border-green-300 border rounded p-2 bg-transparent text-white"
-              type="email"
-              name="email"
-              placeholder="Email"
+    <Box padding={4}>
+      <Flex justify={'space-between'} align='center'>
+        <Text as='h1' size='md' noOfLines={1}>
+          プロジェクト一覧
+        </Text>
+        <Button onClick={handleCreateProject}>新規プロジェクト作成</Button>
+      </Flex>
+      <Box paddingY={4}>
+        <Grid templateColumns='repeat(3, 1fr)' gap={4}>
+          {sampleProject.map((project) => (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              status={project.status}
+              key={project.key}
             />
-            <button type="submit" className="py-1 px-4 text-lg bg-green-400 rounded">
-              Send Magic Link
-            </button>
-          </form>
-        )}
-      </main>
-  )
-}
+          ))}
+        </Grid>
+      </Box>
+    </Box>
+  );
+};
 
 export default Home;
