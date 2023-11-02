@@ -9,7 +9,7 @@ import 'firebase/firestore';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
-export const NextOptions = {
+const NextOptions = {
   // https://next-auth.js.org/configuration/providers
   providers: [
     GoogleProvider({
@@ -17,8 +17,10 @@ export const NextOptions = {
       clientSecret: process.env.GOOGLE_AUTH_SECRET!,
     }),
   ],
-
-  //...
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET!,
+  },
+  secret: process.env.NEXTAUTH_SECRET!,
 };
 
 const handler = NextAuth(NextOptions);
