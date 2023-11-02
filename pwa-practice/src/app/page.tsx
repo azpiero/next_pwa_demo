@@ -1,9 +1,7 @@
-'use client';
-
 import type { NextPage } from 'next';
 import ProjectCard from '@/components/project/projectCard';
-import { Text, Box, Button, Flex, Heading, Grid, GridItem } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
+import { Text, Box, Button, Flex, Heading, Grid } from '@radix-ui/themes';
+import CreateProjectButton from './_compoents/createProjectButton';
 
 type Project = {
   title: string;
@@ -59,20 +57,14 @@ const sampleProject: Project[] = [
  * @returns
  */
 const Home: NextPage = () => {
-  const router = useRouter();
-  const handleCreateProject = () => {
-    router.push('/createProject');
-  };
   return (
-    <Box padding={4}>
-      <Flex justify={'space-between'} align='center'>
-        <Text as='h1' size='md' noOfLines={1}>
-          プロジェクト一覧
-        </Text>
-        <Button onClick={handleCreateProject}>新規プロジェクト作成</Button>
+    <Box className='p-4'>
+      <Flex className='flex justify-between items-center'>
+        <Text>プロジェクト一覧</Text>
+        <CreateProjectButton />
       </Flex>
-      <Box paddingY={4}>
-        <Grid templateColumns='repeat(3, 1fr)' gap={4}>
+      <Box className='pt-4'>
+        <Grid columns='3' gap='4' width='auto'>
           {sampleProject.map((project) => (
             <ProjectCard
               title={project.title}

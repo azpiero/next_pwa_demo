@@ -1,4 +1,4 @@
-import { Text, Box, Card, CardBody, CardHeader, Heading, Stack, StackDivider } from '@chakra-ui/react';
+import { Text, Box, Card, Heading } from '@radix-ui/themes';
 
 /**
  * project一覧画面に表示されるカードの見た目
@@ -9,22 +9,18 @@ import { Text, Box, Card, CardBody, CardHeader, Heading, Stack, StackDivider } f
 const ProjectCard = ({ title, description, status }: { title: string; description: string; status: string }) => {
   return (
     <Card>
-      <CardHeader>
-        <Heading size='md'> {title}</Heading>
-      </CardHeader>
+      <Box>
+        <Heading> {title}</Heading>
+      </Box>
 
-      <CardBody>
-        <Stack divider={<StackDivider />} spacing='4'>
+      <Box>
+        <Box>
           <Box>
-            <Heading size='xs' textTransform='uppercase'>
-              {status}
-            </Heading>
-            <Text pt='2' fontSize='sm'>
-              {description}
-            </Text>
+            <Heading>{status}</Heading>
+            <Text>{description}</Text>
           </Box>
-        </Stack>
-      </CardBody>
+        </Box>
+      </Box>
     </Card>
   );
 };

@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.1",
     "@ducanh2912/next-pwa": "^9.7.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.16.4",
-    "next": "13.5.4",
+    "@next-auth/firebase-adapter": "^2.0.1",
+    "@radix-ui/themes": "^2.0.0",
+    "firebase": "^10.5.2",
+    "firebase-admin": "^11.11.0",
+    "next": "^13.4.19",
+    "next-auth": "^4.24.3",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0"

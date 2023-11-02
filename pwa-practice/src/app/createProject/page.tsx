@@ -1,22 +1,16 @@
-'use client';
-
-import { Text, Box, Button, Flex } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import { useRouter } from 'next/navigation';
 import React from 'react';
+import { Flex, Text, Button } from '@radix-ui/themes';
+import BackButton from './_components/backButton';
 
 const CreateProjectPage: NextPage = () => {
-  const router = useRouter();
-  const handleBackPage = () => {
-    router.back();
-  };
   return (
-    <Box padding={4}>
-      <Flex justify={'space-between'} align='center'>
+    <div className='p-4'>
+      <Flex className='flex justify-between items-center'>
         <Text>Create Project Page</Text>
-        <Button onClick={handleBackPage}>戻る</Button>
+        <BackButton />
       </Flex>
-    </Box>
+    </div>
   );
 };
 

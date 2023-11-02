@@ -1,40 +1,21 @@
-'use client';
-
-import { Box, Flex, Heading, Button, IconButton, Grid } from '@chakra-ui/react';
-import { MdSettings, MdPerson } from 'react-icons/md';
+import { Box, Flex, Heading } from '@radix-ui/themes';
 import NextLink from 'next/link';
-import { useRouter } from 'next/navigation';
+import UserButton from './_components/userButton';
+import AdminButton from './_components/adminButton';
 
+/**
+ * Headerのlayoutコンポーネント
+ * @returns
+ */
 export default function Header() {
-  const router = useRouter();
-  const handleMoveUserList = () => {
-    router.push('/userList');
-  };
   return (
-    <Box as='header'>
-      <Flex
-        bg='white'
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle='solid'
-        borderColor='gray.200'
-        align='center'
-      >
-        <Flex flex={1} justify='space-between' align='center'>
-          <Heading as='h1' size='lg' noOfLines={1}>
-            <NextLink href='/'>実験管理サイト(仮)</NextLink>
-          </Heading>
-          <Box>
-            <IconButton aria-label='admin' onClick={handleMoveUserList} marginRight={4}>
-              <MdSettings />
-            </IconButton>
-            <Button leftIcon={<MdPerson />} fontSize='sm' fontWeight={600} color='white' bg='orange.400'>
-              ユーザ情報
-            </Button>
-          </Box>
-        </Flex>
+    <Box className='flex p-4 bg-bg h-20 border-b-2 border-gray300 justify-between items-center'>
+      <Heading size='6' className='truncate'>
+        <NextLink href='/'>実験管理サイト(仮)</NextLink>
+      </Heading>
+      <Flex gap={'2'}>
+        <AdminButton />
+        <UserButton />
       </Flex>
     </Box>
   );

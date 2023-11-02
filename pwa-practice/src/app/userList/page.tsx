@@ -1,11 +1,8 @@
-'use client';
-
 import UserTable from '@/components/userList/userTable';
-import { Text, Box, Button, Flex } from '@chakra-ui/react';
+import { Text, Box, Button, Flex } from '@radix-ui/themes';
 import { NextPage } from 'next';
-import { useRouter } from 'next/navigation';
 import React from 'react';
-
+import BackButton from './_components/back';
 /**
  * Admin権限で見ることのできるユーザ管理ページ
  * TODO: Adminでしか見れないようにする
@@ -45,15 +42,11 @@ const sampleUserData: SampleUserType[] = [
 ];
 
 const UserListPage: NextPage = () => {
-  const router = useRouter();
-  const handleBackPage = () => {
-    router.back();
-  };
   return (
-    <Box padding={4}>
-      <Flex justify={'space-between'} align='center'>
+    <Box className='p-4'>
+      <Flex className='flex justify-between items-center'>
         <Text>User List Page</Text>
-        <Button onClick={handleBackPage}>戻る</Button>
+        <BackButton />
       </Flex>
       <UserTable userData={sampleUserData} />
     </Box>
